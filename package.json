@@ -19,7 +19,8 @@
   "scripts": {
     "prepublishOnly": "rollup -c",
     "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "watch": "rollup -c -w",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
