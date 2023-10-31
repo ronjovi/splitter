@@ -252,6 +252,7 @@ function Split({
     const aSizePct = (offset / pair.size) * percentage;
     const bSizePct = percentage - (offset / pair.size) * percentage;
 
+
     const isFirst = state.draggingIdx === 0;
     const isLast = state.draggingIdx === state.pairs.length - 1;
     const { aGutterSize, bGutterSize } = getGutterSizes(pair.gutterSize, isFirst, isLast);
