@@ -27,10 +27,12 @@ export default {
     postcss({
       plugins: [],
     }),
-    babel({
-      exclude: 'node_modules/**'
-    }),
     typescript(),
-    terser() // minifies generated bundles
+    babel({
+      babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
+      extensions: ['.js', '.jsx'],
+    }),
+    terser(),
   ],
 };
