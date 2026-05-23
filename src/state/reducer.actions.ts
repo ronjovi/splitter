@@ -1,4 +1,4 @@
-import { SplitDirection } from '../SplitDirection';
+import type { SplitDirection } from '../index';
 
 export enum ActionType {
   SetIsReadyToCompute,

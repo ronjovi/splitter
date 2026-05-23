@@ -1,32 +1,34 @@
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-
-import {terser} from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
-
-import pkg from './package.json'
 
 export default {
   input: 'src/index.tsx',
   output: [
     {
-      file: pkg.main,
+      file: 'lib/cjs/index.js',
       format: 'cjs',
-      exports: 'named',
       sourcemap: true,
     },
     {
-      file: pkg.module,
-      format: 'es',
-      exports: 'named',
-      sourcemap: true
-    }
+      file: 'lib/mjs/index.js',
+      format: 'esm',
+      sourcemap: true,
+    },
   ],
-  external: ['react', 'react-dom', 'react/jsx-runtime'],
+  external: ['react', 'react-dom'],
   plugins: [
+    resolve({
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    }),
+    commonjs(),
     postcss({
       plugins: [],
     }),
-    typescript(),
-    terser(),
+    typescript({
+      tsconfig: './tsconfig.json',
+      clean: true,
+    }),
   ],
 };

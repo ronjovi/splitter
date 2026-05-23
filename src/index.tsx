@@ -3,11 +3,9 @@ import React, {
   useReducer,
   useRef,
 } from 'react';
+import type { MouseEvent, TouchEvent } from 'react';
 
 import './index.css';
-import { SplitDirection } from './SplitDirection';
-
-export { SplitDirection } from './SplitDirection';
 import getInnerSize from './utils/getInnerSize';
 import useEventListener from './useEventListener';
 import Gutter from './Gutter';
@@ -15,7 +13,12 @@ import { ActionType } from './state/reducer.actions';
 import reducer, { State } from './state/reducer';
 import getGutterSizes from './utils/getGutterSize';
 import flattenChildren from './utils/flattenChildren';
-import { isTouchEvent } from 'utils/isTouchEvent';
+import { isTouchEvent } from './utils/isTouchEvent';
+
+export enum SplitDirection {
+  Horizontal = 'Horizontal',
+  Vertical = 'Vertical',
+}
 
 export enum GutterTheme {
   Light = 'Light',
@@ -27,10 +30,7 @@ const DefaultMinSize = 16;
 export const isTouchDevice = typeof window !== 'undefined' && 'ontouchstart' in window;
 
 // users touch or mouse position
-function getPosition(
-  dir: SplitDirection,
-  e: React.MouseEvent | React.TouchEvent,
-) {
+function getPosition(dir: SplitDirection, e: MouseEvent | TouchEvent) {
   const targetsValueRef = isTouchEvent(e) ? e.changedTouches[0] : e;
   if (dir === SplitDirection.Horizontal) return targetsValueRef.clientX;
   return targetsValueRef.clientY;
@@ -268,11 +268,7 @@ function Split({
     }
   }, [state.draggingIdx, state.pairs, direction]);
 
-  const drag = React.useCallback((
-    e: React.MouseEvent | React.TouchEvent,
-    direction: SplitDirection,
-    minSizes: number[],
-  ) => {
+  const drag = React.useCallback((e: MouseEvent | TouchEvent, direction: SplitDirection, minSizes: number[]) => {
     if (!state.isDragging) return
     if (state.draggingIdx === undefined) throw new Error(`Cannot drag - 'draggingIdx' is undefined`);
 
@@ -321,7 +317,7 @@ function Split({
     stopDragging();
   };
 
-  const onMove = (e: React.MouseEvent | React.TouchEvent) => {
+  const onMove = (e: MouseEvent | TouchEvent) => {
     if (!state.isDragging) return;
     if (isTouchEvent(e)) {
       // touch event also scrolls the page, so we need to prevent that
